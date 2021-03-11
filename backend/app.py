@@ -14,7 +14,7 @@ api.add_resource(DetectCategory, '/api/v1.0/detect_category')
 
 if __name__ == '__main__':
     try:
-        app.debug = True
+        # app.debug = True
         app.run(host='0.0.0.0', port=8001) # api Dev
     except Exception as e:
         print('Error: ', e)
