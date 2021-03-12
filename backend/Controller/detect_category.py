@@ -8,6 +8,7 @@ from newspaper import Article
 class DetectCategory(Resource):
     def post(self):
         try:
+            res = {}
             url = request.json.get("url")
             article = Article(url)
             article.download()
@@ -16,7 +17,9 @@ class DetectCategory(Resource):
             document = text_preprocess(document)
             # print(document)
             label_predict_index = nb_model.predict([document])
-            return {"Message": str(label_encode[int(label_predict_index)])}
+            res["category"] = str(label_encode[int(label_predict_index)])
+            res["context"] = document
+            return res
         except Exception as exc:
             print("Error in DetectCategory", exc)
             return abort(401)
