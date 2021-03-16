@@ -16,9 +16,15 @@ class DetectCategory(Resource):
             document = article.text
             document = text_preprocess(document)
             # print(document)
-            label_predict_index = nb_model.predict([document])
-            res["category"] = str(label_encode[int(label_predict_index)])
-            res["context"] = document
+            label_predict_index = nb_model.predict_proba([document])
+            # print(label_predict_index)
+            category_list_predict = [] 
+            for idx in range(0,18):
+                temp_dict = {}
+                temp_dict["label"] = label_encode[idx] 
+                temp_dict["y"] = round(label_predict_index[0][idx], 2)
+                category_list_predict.append(temp_dict)
+            res["category"] = category_list_predict
             return res
         except Exception as exc:
             print("Error in DetectCategory", exc)
